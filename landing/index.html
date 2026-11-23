@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Varuna · Hobli level monsoon intelligence for Karnataka</title>
+  <meta name="description" content="Read five monsoon seasons across 850 Karnataka hobli stations. Varuna shows annual departure, climatological regime and an honest model verdict, station by station.">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Varuna · Hobli level monsoon intelligence for Karnataka">
+  <meta property="og:description" content="850 stations, five observed seasons and an audited rainfall pipeline. See the departure, the regime and the model verdict for any Karnataka hobli.">
+  <meta property="og:image" content="og.png">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="sections.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer src="landing.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "What exactly is a hobli?", "acceptedAnswer": {"@type": "Answer", "text": "A hobli is a revenue circle below the taluk, usually covering 10 to 30 villages. It is the tier used for disaster declarations, relief allocation and crop insurance payouts in Karnataka."}},
+      {"@type": "Question", "name": "Is Varuna an official drought declaration?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is an academic machine learning project. The risk zones follow project thresholds: deficit at minus 20 percent or below, excess at plus 40 percent or above. A district officer still owns the declaration."}},
+      {"@type": "Question", "name": "Where does the rainfall data come from?", "acceptedAnswer": {"@type": "Answer", "text": "Karnataka State Natural Disaster Monitoring Centre annual tables, archived by the OpenCity Karnataka portal. Five seasons are published: 2020, 2021, 2022, 2024 and 2025, under the Open Data Commons Attribution licence."}},
+      {"@type": "Question", "name": "Why is 2023 missing?", "acceptedAnswer": {"@type": "Answer", "text": "KSNDMC published no hobli level table for calendar year 2023. Varuna does not impute it. The gap is carried as an explicit feature, gap years equals 2, and the charts mark the missing season."}},
+      {"@type": "Question", "name": "How accurate is the classifier?", "acceptedAnswer": {"@type": "Answer", "text": "On the 2025 held out season it reaches 70.82 percent accuracy with 0.4077 macro F1 and 6.06 percent drought recall. Five fold district grouped validation gives 30.49 percent drought recall. A majority class guess scores 79.65 percent accuracy and finds no drought at all."}},
+      {"@type": "Question", "name": "Why is there no map?", "acceptedAnswer": {"@type": "Answer", "text": "The source tables contain no latitude, longitude or boundary geometry. No coordinates were invented, so districts are compared as a departure matrix and as the terrain on this page, not as a map."}},
+      {"@type": "Question", "name": "What is a suspect normal?", "acceptedAnswer": {"@type": "Answer", "text": "A station whose reported normal never changes across seasons while its departures stay one sided. 338 stations match that pattern. They are flagged everywhere they appear and are never silently corrected."}},
+      {"@type": "Question", "name": "Can I reuse the data or the code?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, with attribution. The data is released under the Open Data Commons Attribution licence and the project source is public on GitHub. Cite Varuna if you reuse the analysis."}}
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav-wrap">
+    <nav class="nav" aria-label="Primary">
+      <a class="brand" href="#overview" aria-label="Varuna, back to overview">
+        <svg class="brand-mark" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="0.75" y="0.75" width="22.5" height="22.5" fill="none" stroke="currentColor" stroke-opacity="0.4"/>
+          <path d="M6 17V11.5 M10 17V7 M14 17V13.2 M18 17V9.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M4.2 19.6H19.8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span class="brand-name">Varuna</span>
+      </a>
+
+      <div class="nav-links" aria-label="Sections">
+        <a class="nav-link" href="#overview" aria-current="location">Overview</a>
+        <a class="nav-link" href="#method">Method</a>
+        <a class="nav-link" href="#evidence">Evidence</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn btn-sm btn-primary nav-cta" href="https://varuna-ml.streamlit.app/" target="_blank" rel="noopener">
+          Open workspace
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" hidden>
+    <div class="mobile-menu-inner">
+      <a class="mobile-link" href="#overview">Overview</a>
+      <a class="mobile-link" href="#problem">Why it exists</a>
+      <a class="mobile-link" href="#method">Method</a>
+      <a class="mobile-link" href="#evidence">Evidence</a>
+      <a class="mobile-link" href="#faq">FAQ</a>
+      <a class="btn btn-primary mobile-cta" href="https://varuna-ml.streamlit.app/" target="_blank" rel="noopener">Open the live workspace</a>
+      <p class="caption-2 mobile-note">4,250 station seasons · 31 districts · 2020 to 2025</p>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="overview">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>Karnataka · hobli monsoon intelligence</p>
+          <h1 class="heading-1 hero-title">See the dry hobli the district average hides.</h1>
+          <p class="body-2 hero-lead">
+            Varuna reads five observed monsoon seasons across Karnataka's hobli station network.
+            Pick a station to see its departure, its climatological regime and the classifier's verdict,
+            with the data caveats still attached.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://varuna-ml.streamlit.app/" target="_blank" rel="noopener">
+              Open the live workspace
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M5 12h13M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+          </div>
+          <p class="caption-2 hero-proof">4,250 station seasons · 877 stations · 31 districts · 2020 to 2025</p>
+        </div>
+
+        <figure class="terrain-card reveal">
+          <div class="terrain-frame">
+            <canvas id="terrain" role="img"
+              aria-label="Three dimensional terrain of mean rainfall departure for 31 Karnataka districts across 2020, 2021, 2022, 2024 and 2025. The 2022 season peaks above plus 100 percent in Mandya and Tumakuru; the driest reading is Chamarajanagara in 2025 at minus 24.1 percent.">
+            </canvas>
+            <div class="terrain-tip" id="terrain-tip" hidden></div>
+          </div>
+          <figcaption class="caption-2">
+            Mean departure by district and season, from the cleaned station panel.
+            <span class="terrain-hint">Drag to turn the field. Hover a ridge for the value.</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="stats-band" aria-label="Dataset facts">
+      <div class="container stats-grid">
+        <div class="stat">
+          <span class="stat-value">850</span>
+          <span class="stat-label">stations each season</span>
+          <span class="stat-note">877 canonical stations across the panel</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">4,250</span>
+          <span class="stat-label">clean station seasons</span>
+          <span class="stat-note">From 5,636 raw rows, 2020 to 2025</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">338</span>
+          <span class="stat-label">flagged baseline normals</span>
+          <span class="stat-note">Static, one sided records, flagged on sight</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">4</span>
+          <span class="stat-label">climatological regimes</span>
+          <span class="stat-note">k means with silhouette 0.3406</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="problem">
+      <div class="container">
+        <p class="eyebrow">The problem</p>
+        <h2 class="heading-2 section-title">A district mean cannot show you a rain shadow.</h2>
+        <div class="split">
+          <div class="prose">
+            <p class="body-3">
+              The hobli is the revenue circle used for disaster declarations, relief funds and crop
+              insurance payouts, and it holds between 10 and 30 villages. State and district forecasts
+              still smooth it into a single number, so the dry pocket and the wet ridge arrive as one
+              comfortable average.
+            </p>
+            <p class="body-3">
+              Varuna starts from the station record instead: 4,250 cleaned station seasons across
+              31 districts, every departure recomputed, and every static baseline normal flagged.
+            </p>
+          </div>
+
+          <aside class="case-card tilt reveal" aria-label="Data quality case record">
+            <p class="caption-4 case-label">Case record</p>
+            <h3 class="heading-4">Agumbe, 2024</h3>
+            <p class="case-value">5,383.1<span class="case-unit">mm</span></p>
+            <p class="body-6 case-body">Recorded rainfall, still classified drought prone at −28.84%.</p>
+            <p class="caption-2 case-note">Its normal is fixed at 7,565.0 mm. The label measures the benchmark, not the weather.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="benefits">
+      <div class="container">
+        <p class="eyebrow">What you get</p>
+        <h2 class="heading-2 section-title">One workspace, four habits of evidence.</h2>
+        <div class="benefit-grid">
+          <article class="benefit-card tilt reveal">
+            <span class="icon-tile" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="12" r="8.4"/><path d="M12 1.4v3M12 19.6v3M1.4 12h3M19.6 12h3"/>
+              </svg>
+            </span>
+            <h3 class="title-2">Hobli resolution</h3>
+            <p class="body-6">850 stations per season, so a deficit pocket is not averaged into a comfortable district figure.</p>
+          </article>
+
+          <article class="benefit-card tilt reveal">
+            <span class="icon-tile" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M12 2.8l7 2.6v6.2c0 4.4-3 8-7 9.6-4-1.6-7-5.2-7-9.6V5.4z"/><path d="M8.6 12l2.4 2.4 4.4-4.6"/>
+              </svg>
+            </span>
+            <h3 class="title-2">Leakage free features</h3>
+            <p class="body-6">Every input is computed from years before the target season, so the hold out test stays honest.</p>
+          </article>
+
+          <article class="benefit-card tilt reveal">
+            <span class="icon-tile" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M3 7h18M3 17h18M7 3v18M17 3v18"/>
+              </svg>
+            </span>
+            <h3 class="title-2">Geography held out</h3>
+            <p class="body-6">Five fold district grouped validation keeps whole districts out of training, not just random rows.</p>
+          </article>
+
+          <article class="benefit-card tilt reveal">
+            <span class="icon-tile" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M12 3.2l9 16.6H3z"/><path d="M12 9.4v4.4M12 17.2v.6"/>
+              </svg>
+            </span>
+            <h3 class="title-2">Caveats in the open</h3>
+            <p class="body-6">Suspect normals are flagged wherever they appear and are never silently corrected.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="tagline-section" aria-label="Statement">
+      <div class="container">
+        <p class="tagline" id="tagline">A district average is comfortable. Eight hundred and fifty hobli readings are honest.</p>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="container">
+        <p class="eyebrow">Method</p>
+        <h2 class="heading-2 section-title">How a reading is built.</h2>
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step-number">01</span>
+            <h3 class="title-1">Choose a hobli</h3>
+            <p class="body-6">Pick a district, taluk and hobli in the sidebar. The selection follows you across every module.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-number">02</span>
+            <h3 class="title-1">Read the season</h3>
+            <p class="body-6">Observed rainfall against the station normal, the departure on the KSNDMC scale, and the annual register with 2023 marked absent.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-number">03</span>
+            <h3 class="title-1">Check the evidence</h3>
+            <p class="body-6">Open the classifier verdict, the cluster regime and the model limits before you act on any number.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="evidence">
+      <div class="container">
+        <p class="eyebrow">Evidence</p>
+        <h2 class="heading-2 section-title">What the model gets right, and where it fails.</h2>
+        <p class="body-3 section-lede">
+          All figures come from the project's own evaluation files. Nothing on this page is
+          recomputed, rounded up or reweighted for presentation.
+        </p>
+
+        <div class="metric-grid">
+          <article class="metric-card tilt reveal">
+            <span class="metric-value">70.82%</span>
+            <span class="metric-label">Random forest accuracy</span>
+            <span class="metric-note">2025 held out season, 850 unseen hoblis</span>
+          </article>
+          <article class="metric-card tilt reveal">
+            <span class="metric-value">6.06%</span>
+            <span class="metric-label">Hold out drought recall</span>
+            <span class="metric-note">Four of the 66 drought hoblis were found</span>
+          </article>
+          <article class="metric-card tilt reveal">
+            <span class="metric-value">30.49%</span>
+            <span class="metric-label">Validation drought recall</span>
+            <span class="metric-note">Five fold district grouped cross validation</span>
+          </article>
+          <article class="metric-card tilt reveal">
+            <span class="metric-value">21.65%</span>
+            <span class="metric-label">Zero departure error</span>
+            <span class="metric-note">MAE, and it still beats every trained regressor</span>
+          </article>
+        </div>
+
+        <div class="honest-card reveal">
+          <p class="caption-4 honest-label">Read this before the accuracy figure</p>
+          <p class="heading-4 honest-line">
+            A model that misses 94% of 2025 drought events cannot serve as an early warning system on its own.
+          </p>
+          <p class="body-6 honest-body">
+            The majority class baseline scores 79.65% accuracy by guessing stable everywhere and
+            catching no drought at all. The workspace shows the classifier verdict next to the
+            evidence that limits it, so a stable label is read as a weak signal.
+          </p>
+        </div>
+
+        <div class="provenance-grid">
+          <div class="provenance-item reveal">
+            <p class="caption-3 provenance-label">Public record</p>
+            <p class="body-6">KSNDMC annual tables, archived by the OpenCity Karnataka portal.</p>
+          </div>
+          <div class="provenance-item reveal">
+            <p class="caption-3 provenance-label">Open licence</p>
+            <p class="body-6">Released under the Open Data Commons Attribution licence. Cite the project on reuse.</p>
+          </div>
+          <div class="provenance-item reveal">
+            <p class="caption-3 provenance-label">Audited pipeline</p>
+            <p class="body-6">5,636 raw rows reduced to 4,250 clean station seasons, with every removal counted.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container faq-container">
+        <p class="eyebrow">Questions</p>
+        <h2 class="heading-2 section-title">Answered plainly.</h2>
+
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">What exactly is a hobli?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">A hobli is a revenue circle below the taluk, usually covering 10 to 30 villages. It is the tier used for disaster declarations, relief allocation and crop insurance payouts in Karnataka.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">Is Varuna an official drought declaration?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">No. It is an academic machine learning project. The risk zones follow project thresholds: deficit at −20% or below, excess at +40% or above. A district officer still owns the declaration.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">Where does the rainfall data come from?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">Karnataka State Natural Disaster Monitoring Centre annual tables, archived by the OpenCity Karnataka portal. Five seasons are published: 2020, 2021, 2022, 2024 and 2025, under the Open Data Commons Attribution licence.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">Why is 2023 missing?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">KSNDMC published no hobli level table for calendar year 2023. Varuna does not impute it. The gap is carried as an explicit feature, <code>gap_years = 2</code>, and the charts mark the missing season.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">How accurate is the classifier?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">On the 2025 held out season it reaches 70.82% accuracy with 0.4077 macro F1 and 6.06% drought recall. Five fold district grouped validation gives 30.49% drought recall. A majority class guess scores 79.65% accuracy and finds no drought at all, which is why accuracy is not the headline.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">Why is there no map?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">The source tables contain no latitude, longitude or boundary geometry. No coordinates were invented, so districts are compared as a departure matrix and as the terrain on this page, not as a map.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">What is a suspect normal?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">A station whose reported normal never changes across seasons while its departures stay one sided. 338 stations match that pattern. They are flagged everywhere they appear and are never silently corrected.</p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-summary">
+              <span class="title-3">Can I reuse the data or the code?</span>
+              <span class="faq-icon" aria-hidden="true"></span>
+            </summary>
+            <p class="body-6 faq-answer">Yes, with attribution. The data is released under the Open Data Commons Attribution licence and the project source is public on GitHub. Cite Varuna if you reuse the analysis.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta" id="access">
+      <div class="container final-cta-inner reveal">
+        <h2 class="heading-2">Start with one hobli.</h2>
+        <p class="body-2 final-copy">Open the workspace, choose a district and read the season with its evidence attached.</p>
+        <a class="btn btn-primary" href="https://varuna-ml.streamlit.app/" target="_blank" rel="noopener">
+          Open the live workspace
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <path d="M5 12h13M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+        <p class="caption-2 risk-line">Open access · No account · No tracking · Data under the Open Data Commons Attribution licence</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <p class="title-2">Varuna</p>
+        <p class="body-6 footer-copy">Hobli level rainfall deviation and drought risk analytics for Karnataka. Built as an academic machine learning project.</p>
+      </div>
+      <div class="footer-col">
+        <p class="caption-3 footer-heading">Workspace</p>
+        <a class="footer-link" href="https://varuna-ml.streamlit.app/" target="_blank" rel="noopener">Live application</a>
+        <a class="footer-link" href="https://github.com/pranavhm25/varuna" target="_blank" rel="noopener">Source on GitHub</a>
+      </div>
+      <div class="footer-col">
+        <p class="caption-3 footer-heading">Data</p>
+        <a class="footer-link" href="https://opencity.in/" target="_blank" rel="noopener">OpenCity Karnataka</a>
+        <span class="footer-link footer-static">KSNDMC annual tables</span>
+        <span class="footer-link footer-static">Open Data Commons Attribution</span>
+      </div>
+      <div class="footer-col">
+        <p class="caption-3 footer-heading">Legal</p>
+        <a class="footer-link" href="privacy.html">Privacy</a>
+        <a class="footer-link" href="terms.html">Terms</a>
+      </div>
+    </div>
+    <div class="container footer-base">
+      <p class="caption-5">© 2026 Varuna project team · Academic machine learning initiative</p>
+      <p class="caption-5">Not an official drought declaration</p>
+    </div>
+  </footer>
+</body>
+</html>
