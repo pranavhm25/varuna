@@ -164,6 +164,17 @@ ml-project/
 │   │   └── screenshot_tab5_model_limits.svg
 │   ├── presentation_outline.md        # 10-slide presentation deck with speaker notes
 │   └── viva_qa.md                     # 20 rigorous examiner viva Q&A responses
+├── landing/                           # Public landing page, published to GitHub Pages
+│   ├── index.html                     # Overview, problem, method, evidence, FAQ and CTAs
+│   ├── styles.css                     # Design tokens, navigation, hero, terrain card
+│   ├── sections.css                   # Sections, motion, responsive, legal, 404 styles
+│   ├── landing.js                     # Header, mobile menu, reveals, tagline, terrain
+│   ├── privacy.html                   # Privacy note
+│   ├── terms.html                     # Terms of use
+│   ├── 404.html                       # Not found page served by GitHub Pages
+│   ├── favicon.svg                    # Site icon
+│   ├── og.png                         # Social sharing image
+│   └── fonts/                         # Self hosted Geist and Geist Mono
 ├── models/
 │   ├── best_classifier.joblib         # Serialized Random Forest classifier
 │   ├── best_regressor.joblib          # Serialized Gradient Boosting regressor
@@ -187,16 +198,12 @@ ml-project/
 │   ├── audit_name_merges.py           # Cross-station suffix and boundary audit script
 │   ├── refresh_eda.py                 # Automated EDA notebook recreation runner
 │   └── smoke_test_app.py              # Automated 3-station headless application smoke test
-├── src/
+└── src/
 │   ├── clean_data.py                  # Stage 1 extraction, parsing, and harmonization
 │   ├── export_cluster_labels.py       # Cluster assignment exporter generating hobli_clusters.csv
 │   ├── features.py                    # Stage 2 temporal feature engineering pipeline
 │   ├── predict_risk.py                # Production inference module with strict schema validation
 │   └── train_models.py                # Stage 3 cross-validation and model training pipeline
-└── website/                           # Bespoke production web portal (Anti-vibe-coding)
-    ├── index.html                     # Semantic HTML5 portal with all 20 UI enhancements
-    ├── styles.css                     # Editorial stylesheet, print layout, dark mode tokens
-    └── app.js                         # Zero-dependency client-side search and filtering
 ```
 
 ---
@@ -206,6 +213,11 @@ ml-project/
 ### 1. Live Web Application
 Launch the deployed application immediately without local setup:  
 👉 **[https://varuna-ml.streamlit.app/](https://varuna-ml.streamlit.app/)**
+
+The public landing page lives in `landing/` and is published to GitHub Pages by `.github/workflows/pages.yml`
+on every push that touches that folder. Enable it once under **Settings → Pages → Build and deployment →
+Source: GitHub Actions**; the site is then served at https://pranavhm25.github.io/varuna/ and links out to the
+Streamlit workspace above. Preview it locally with `python -m http.server 8600 --directory landing`.
 
 ### 2. Local Setup & Execution
 ```bash

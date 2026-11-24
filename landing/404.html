@@ -6,6 +6,16 @@
   <title>Page not found · Varuna</title>
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#000000">
+  <script>
+    /* GitHub Pages serves this file for any missing path, including deep ones,
+       so every relative path is resolved from the site root instead. */
+    (function () {
+      var parts = location.pathname.split("/").filter(Boolean);
+      var base = document.createElement("base");
+      base.href = /\.github\.io$/.test(location.hostname) && parts.length ? "/" + parts[0] + "/" : "/";
+      document.head.appendChild(base);
+    })();
+  </script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="sections.css">
