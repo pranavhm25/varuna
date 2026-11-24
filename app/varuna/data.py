@@ -139,5 +139,30 @@ def zone_of(departure: float, drought: float = -20.0, excess: float = 40.0) -> s
     return "stable"
 
 
+def adjusted_zone_of(
+    departure: float,
+    normal_mm: float,
+    actual_mm: float,
+    is_suspect: bool,
+    median_normal: float = 700.0,
+) -> tuple[str, bool]:
+    """Return (zone, was_overridden).
+
+    For suspect-normal stations with very high static normals (> 2 000 mm)
+    whose actual rainfall still exceeds the statewide median normal, the
+    departure-based "drought_prone" label is an artifact of the benchmark.
+    These are overridden to "stable" and the second return value is True.
+    """
+    raw_zone = zone_of(departure)
+    if (
+        is_suspect
+        and raw_zone == "drought_prone"
+        and normal_mm > 2000
+        and actual_mm > median_normal
+    ):
+        return "stable", True
+    return raw_zone, False
+
+
 def zone_series(departures: pd.Series) -> pd.Series:
     return departures.map(zone_of)

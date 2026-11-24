@@ -11,7 +11,7 @@ import pandas as pd
 import streamlit as st
 
 from .. import charts, config, ui
-from ..data import zone_of
+from ..data import zone_of, adjusted_zone_of
 
 PAGE = {
     "slug": "hobli",
@@ -88,12 +88,17 @@ def render(data, sel: dict, p: dict) -> None:
     latest = hist.iloc[-1]
     year = int(latest["year"])
     dep = float(latest["departure_pct"])
-    zone = zone_of(dep)
+    suspect_key = (district, taluk, hobli)
+    suspect = data.suspect_keys
+    is_suspect = suspect_key in suspect
+    median_normal = float(data.clean["normal_mm"].median())
+    zone, zone_overridden = adjusted_zone_of(
+        dep, float(latest["normal_mm"]), float(latest["actual_mm"]),
+        is_suspect, median_normal,
+    )
     zone_tone = config.ZONE_TONES[zone]
     cluster_name = cluster["cluster_name"] if cluster is not None else "\u2014"
     cluster_id = int(cluster["cluster_id"]) if cluster is not None else 2
-    suspect_key = (district, taluk, hobli)
-    suspect = data.suspect_keys
 
     ui.render(
         ui.page_header(
@@ -151,12 +156,19 @@ def render(data, sel: dict, p: dict) -> None:
         )
     )
 
-    if suspect_key in suspect:
+    if is_suspect:
         row = data.suspect[
             (data.suspect["district"] == district)
             & (data.suspect["taluk"] == taluk)
             & (data.suspect["hobli"] == hobli)
         ].iloc[0]
+        override_note = (
+            " Because this station receives objectively high rainfall "
+            f"(<b>{latest['actual_mm']:,.1f} mm</b> in {year}), the drought label has been "
+            "overridden to <b>Stable</b>."
+            if zone_overridden
+            else ""
+        )
         ui.render(
             ui.callout(
                 "amber",
@@ -166,8 +178,7 @@ def render(data, sel: dict, p: dict) -> None:
                     f"normal of <b>{row['normal_mm']:,.1f} mm</b> and persistent "
                     f"<b>{ui.esc(row['direction'].replace('_', ' '))}</b> departures "
                     f"(mean {row['mean_departure_pct']:+.2f}%). Extreme departures here can measure an "
-                    f"uncalibrated benchmark as much as the weather. Read the zone classification as "
-                    f"a property of the record, not necessarily of the season."
+                    f"uncalibrated benchmark as much as the weather.{override_note}"
                 ),
             )
         )
@@ -190,14 +201,17 @@ def render(data, sel: dict, p: dict) -> None:
     with col_register:
         rows = []
         for _, r in hist.iterrows():
-            z = zone_of(r["departure_pct"])
+            rz, _ = adjusted_zone_of(
+                r["departure_pct"], float(r["normal_mm"]),
+                float(r["actual_mm"]), is_suspect, median_normal,
+            )
             rows.append(
                 {
                     "year": str(int(r["year"])),
                     "actual": ui.num(r["actual_mm"], 1),
                     "normal": ui.num(r["normal_mm"], 1),
                     "dep": ui.signed(r["departure_pct"], 1, "%"),
-                    "zone": {"raw": ui.zone_chip(z)},
+                    "zone": {"raw": ui.zone_chip(rz)},
                 }
             )
         rows.insert(
