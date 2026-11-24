@@ -27,7 +27,7 @@ for path in (str(ROOT_DIR), str(APP_DIR)):
 
 from varuna import config, theme, ui  # noqa: E402
 from varuna.data import DataUnavailable, VarunaData, load_data  # noqa: E402
-from varuna.modules import districts, hobli, models, quality, zones  # noqa: E402
+from varuna.modules import districts, hobli, models, overview, quality, zones  # noqa: E402
 
 st.set_page_config(
     page_title="VARUNA \u00b7 Karnataka Rainfall Intelligence",
@@ -42,8 +42,9 @@ st.set_page_config(
     },
 )
 
-MODULES = [hobli.PAGE, zones.PAGE, districts.PAGE, quality.PAGE, models.PAGE]
+MODULES = [overview.PAGE, hobli.PAGE, zones.PAGE, districts.PAGE, quality.PAGE, models.PAGE]
 RENDERERS = {
+    "overview": overview.render,
     "hobli": hobli.render,
     "zones": zones.render,
     "districts": districts.render,
@@ -62,7 +63,7 @@ def resolve_theme() -> str:
     saved = st.session_state.get("varuna_theme")
     if saved not in ("light", "dark"):
         requested = st.query_params.get("theme")
-        saved = requested if requested in ("light", "dark") else "light"
+        saved = requested if requested in ("light", "dark") else "dark"
         st.session_state["varuna_theme"] = saved
     return saved
 
@@ -84,8 +85,8 @@ st.markdown(f"<style>{theme.css_for(theme_name)}</style>", unsafe_allow_html=Tru
 
 # -------------------------------------------------------------------- nav ---
 def module_state() -> str:
-    slug = st.session_state.get("varuna_module", "hobli")
-    return slug if slug in RENDERERS else "hobli"
+    slug = st.session_state.get("varuna_module", "overview")
+    return slug if slug in RENDERERS else "overview"
 
 
 def set_module(slug: str) -> None:
@@ -253,12 +254,13 @@ with st.sidebar:
 # -------------------------------------------------------------------- page --
 slug = module_state()
 page = next(m for m in MODULES if m["slug"] == slug)
+position = "00" if slug == "overview" else f"{page['index']} / 05"
 
 st.markdown(
     f"""
     <div class="v-topbar">
       <span>VARUNA &middot; meteorological intelligence</span>
-      <span>{ui.esc(page['index'])} / 05 &middot; {ui.esc(page['label'])}</span>
+      <span>{ui.esc(position)} &middot; {ui.esc(page['label'])}</span>
       <span>{'Night watch' if theme_name == 'dark' else 'Daylight'} reading</span>
     </div>
     """,

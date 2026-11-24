@@ -18,3 +18,4 @@ Thumbs.db
 # Local preview artefacts
 landing/.server.log
 landing/.shot-*.png
+.shot-*.png
