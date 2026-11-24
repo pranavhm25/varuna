@@ -7,7 +7,7 @@
 <br/><br/>
 
 [![Landing Page](https://img.shields.io/badge/Live_Site-pranavhm25.github.io%2Fvaruna-0284c7?style=for-the-badge&logo=githubpages&logoColor=white)](https://pranavhm25.github.io/varuna/)
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://varuna-ml.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://varunaml.streamlit.app/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-3776ab.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-f7931e.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![License: ODC-BY](https://img.shields.io/badge/License-ODC--BY-10b981.svg?style=for-the-badge)](https://opendatacommons.org/licenses/by/)
@@ -15,7 +15,7 @@
 <br/>
 
 ### **[👉 Landing page: pranavhm25.github.io/varuna 👈](https://pranavhm25.github.io/varuna/)**
-### **[👉 Streamlit workspace: varuna-ml.streamlit.app 👈](https://varuna-ml.streamlit.app/)**
+### **[👉 Streamlit workspace: varunaml.streamlit.app 👈](https://varunaml.streamlit.app/)**
 
 *Official KSNDMC Karnataka Hobli-Level Rainfall Deviation and Drought-Risk Analytics Platform*
 
@@ -36,9 +36,9 @@
 </td>
 <td width="50%" valign="top">
 
-**[Streamlit workspace](https://varuna-ml.streamlit.app/)** — module 01, the station dossier for Badami in Bagalkote.
+**[Streamlit workspace](https://varunaml.streamlit.app/)** — module 01, the station dossier for Badami in Bagalkote.
 
-<a href="https://varuna-ml.streamlit.app/"><img src="docs/images/screenshot_app_hobli.png" alt="Streamlit workspace showing the Badami station dossier in module 01" width="100%" /></a>
+<a href="https://varunaml.streamlit.app/"><img src="docs/images/screenshot_app_hobli.png" alt="Streamlit workspace showing the Badami station dossier in module 01" width="100%" /></a>
 
 </td>
 </tr>
@@ -57,13 +57,13 @@ While synoptic state and district-level forecasts mask extreme micro-climatic ra
 2. Engineers strict *ex-ante*, leakage-free temporal features while explicitly parameterizing the missing calendar year 2023 (`gap_years = 2`).
 3. Evaluates spatial generalization via **5-Fold District-Grouped Cross-Validation** (`GroupKFold` across 31 districts) and an **out-of-time stress test on 2025**.
 4. Benchmarks machine learning models against honest **Majority-Class** and **Persistence** baselines.
-5. Deploys an interactive, open-access decision-support application hosted on Streamlit Cloud at **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**.
+5. Deploys an interactive, open-access decision-support application hosted on Streamlit Cloud at **[varunaml.streamlit.app](https://varunaml.streamlit.app/)**.
 
 ---
 
 ## 🧭 Application Modules
 
-The Streamlit workspace at **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)** is a single analytical shell rather than a row of tabs: a persistent station selector (district → taluk → hobli) sits in the sidebar, five analytical modules occupy the reading pane, and a Daylight / Night watch switch changes the theme without touching any analytical state.
+The Streamlit workspace at **[varunaml.streamlit.app](https://varunaml.streamlit.app/)** is a single analytical shell rather than a row of tabs: a persistent station selector (district → taluk → hobli) sits in the sidebar, five analytical modules occupy the reading pane, and a Daylight / Night watch switch changes the theme without touching any analytical state.
 
 | Module | Scope | What it contains |
 | :--- | :--- | :--- |
@@ -146,7 +146,7 @@ Real-world meteorological data from state monitoring centres is rife with admini
 |  - Climatological cluster atlas & filterable chronic-deficit registry             |
 |  - District departure matrix replacing spatial maps (no source coordinates)       |
 |  - Explicit data-quality audit and honest model-limit reporting                   |
-|  - Deployed publicly on Streamlit Cloud: https://varuna-ml.streamlit.app/         |
+|  - Deployed publicly on Streamlit Cloud: https://varunaml.streamlit.app/         |
 +-----------------------------------------------------------------------------------+
 ```
 
@@ -239,7 +239,7 @@ Open the deployed site without local setup:
 👉 **[https://pranavhm25.github.io/varuna/](https://pranavhm25.github.io/varuna/)**
 
 That page is the project's public front door. Its calls to action lead into the Streamlit dashboard, which reads the
-observations directly: **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**
+observations directly: **[varunaml.streamlit.app](https://varunaml.streamlit.app/)**
 
 The landing page lives in `landing/` and is published to GitHub Pages by `.github/workflows/pages.yml` on every push
 that touches that folder. Pages is enabled for this repository under **Settings → Pages → Build and deployment →
@@ -369,6 +369,6 @@ This project was developed collaboratively as a 4-person academic machine learni
 
 - **Person 4: Aaditya V (Application Engineering, System Integration, Documentation & Defense Preparation)**:
   - Streamlit web application development (`app/app.py` and the `app/varuna/` module package), cluster labels export (`src/export_cluster_labels.py`), and headless smoke testing (`scripts/smoke_test_app.py`).
-  - Production deployment to Streamlit Community Cloud at **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**.
+  - Production deployment to Streamlit Community Cloud at **[varunaml.streamlit.app](https://varunaml.streamlit.app/)**.
   - System integration, dependencies specification (`requirements.txt`), and comprehensive documentation (`README.md`).
   - Final academic report (`reports/final_report.md`), 10-slide presentation deck (`docs/presentation_outline.md`), and 20 viva examination defense responses (`docs/viva_qa.md`).
