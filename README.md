@@ -1,20 +1,22 @@
 <div align="center">
 
-<a href="https://varuna-ml.streamlit.app/">
+<a href="https://pranavhm25.github.io/varuna/">
   <img src="docs/images/app_banner.png" alt="Varuna Project Banner" width="100%" />
 </a>
 
 <br/><br/>
 
+[![Landing Page](https://img.shields.io/badge/Live_Site-pranavhm25.github.io%2Fvaruna-0284c7?style=for-the-badge&logo=githubpages&logoColor=white)](https://pranavhm25.github.io/varuna/)
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://varuna-ml.streamlit.app/)
-[![Live App URL](https://img.shields.io/badge/Live_Deployment-varuna--ml.streamlit.app-0284c7?style=for-the-badge&logo=streamlit)](https://varuna-ml.streamlit.app/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-3776ab.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-f7931e.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![License: ODC-BY](https://img.shields.io/badge/License-ODC--BY-10b981.svg?style=for-the-badge)](https://opendatacommons.org/licenses/by/)
 
 <br/>
 
-### **[👉 Click Here to Launch the Live Web Application: varuna-ml.streamlit.app 👈](https://varuna-ml.streamlit.app/)**
+### **[👉 Start at the Varuna landing page: pranavhm25.github.io/varuna 👈](https://pranavhm25.github.io/varuna/)**
+
+Dashboard querying 4,250 observations, opened from that page: **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**
 
 *Official KSNDMC Karnataka Hobli-Level Rainfall Deviation and Drought-Risk Analytics Platform*
 
@@ -210,14 +212,17 @@ ml-project/
 
 ## 🚀 How to Run the Project (Step-by-Step)
 
-### 1. Live Web Application
-Launch the deployed application immediately without local setup:  
-👉 **[https://varuna-ml.streamlit.app/](https://varuna-ml.streamlit.app/)**
+### 1. Live Site and Application
+Open the deployed site without local setup:  
+👉 **[https://pranavhm25.github.io/varuna/](https://pranavhm25.github.io/varuna/)**
 
-The public landing page lives in `landing/` and is published to GitHub Pages by `.github/workflows/pages.yml`
-on every push that touches that folder. Enable it once under **Settings → Pages → Build and deployment →
-Source: GitHub Actions**; the site is then served at https://pranavhm25.github.io/varuna/ and links out to the
-Streamlit workspace above. Preview it locally with `python -m http.server 8600 --directory landing`.
+That page is the project's public front door. Its calls to action lead into the Streamlit dashboard, which reads the
+observations directly: **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**
+
+The landing page lives in `landing/` and is published to GitHub Pages by `.github/workflows/pages.yml` on every push
+that touches that folder. Pages is enabled for this repository under **Settings → Pages → Build and deployment →
+Source: GitHub Actions**, so the workflow publishes on its own. Preview the page locally with
+`python -m http.server 8600 --directory landing`.
 
 ### 2. Local Setup & Execution
 ```bash
