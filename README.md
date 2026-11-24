@@ -14,15 +14,37 @@
 
 <br/>
 
-### **[👉 Start at the Varuna landing page: pranavhm25.github.io/varuna 👈](https://pranavhm25.github.io/varuna/)**
-
-Dashboard querying 4,250 observations, opened from that page: **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**
+### **[👉 Landing page: pranavhm25.github.io/varuna 👈](https://pranavhm25.github.io/varuna/)**
+### **[👉 Streamlit workspace: varuna-ml.streamlit.app 👈](https://varuna-ml.streamlit.app/)**
 
 *Official KSNDMC Karnataka Hobli-Level Rainfall Deviation and Drought-Risk Analytics Platform*
 
 ---
 
 </div>
+
+## 🖼️ Screenshots
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**[Landing page](https://pranavhm25.github.io/varuna/)** — the public entry point, with the district-by-season departure field and the headline counts.
+
+<a href="https://pranavhm25.github.io/varuna/"><img src="docs/images/screenshot_landing.png" alt="Varuna landing page: headline, departure terrain and station counts" width="100%" /></a>
+
+</td>
+<td width="50%" valign="top">
+
+**[Streamlit workspace](https://varuna-ml.streamlit.app/)** — module 01, the station dossier for Badami in Bagalkote.
+
+<a href="https://varuna-ml.streamlit.app/"><img src="docs/images/screenshot_app_hobli.png" alt="Streamlit workspace showing the Badami station dossier in module 01" width="100%" /></a>
+
+</td>
+</tr>
+</table>
+
+---
 
 ## 📌 Executive Summary & Problem Statement
 
@@ -53,7 +75,7 @@ The Streamlit workspace at **[varuna-ml.streamlit.app](https://varuna-ml.streaml
 
 Every module reads the existing artifacts in `data/`, `models/` and `reports/` and calls `src/predict_risk.py` for inference. Nothing is retrained, recomputed or synthesized for display, and no map is drawn because the source tables carry no coordinates.
 
-> Screenshots under `docs/images/` predate the current interface and are retained only as a historical record of the earlier tab layout.
+> The `screenshot_tab*.png` files date from the earlier tab layout and are kept only as a historical record; the current interface is shown in the screenshots above, both captured from the deployed URLs.
 
 ---
 
