@@ -1,11 +1,12 @@
 [theme]
-# Light-mode base of the Varuna design system. The application applies its own
-# token layer for both themes at runtime; these values keep native widgets and
-# the initial paint consistent with the interface palette.
-primaryColor = "#2A6584"
-backgroundColor = "#F2EEE4"
-secondaryBackgroundColor = "#E9E3D5"
-textColor = "#12232A"
+# Night-mode base of the Varuna design system, the app's default theme. The
+# application applies its own token layer for both themes at runtime; these values
+# keep native widgets and the initial paint consistent with the dark palette.
+base = "dark"
+primaryColor = "#79B0CB"
+backgroundColor = "#071A21"
+secondaryBackgroundColor = "#0C2229"
+textColor = "#EAE5D8"
 font = "sans serif"
 
 [server]

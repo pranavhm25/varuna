@@ -56,13 +56,14 @@ RENDERERS = {
 def resolve_theme() -> str:
     """Resolve the theme once per session and keep it stable across reruns.
 
-    Streamlit's configured base theme is light; the app's own token layer owns the
-    rest. The session is seeded on the first run so navigation never flips it.
+    Streamlit's configured base theme is dark, matching the landing page; the app's
+    own token layer owns the rest. The session is seeded on the first run so
+    navigation never flips it.
     """
     saved = st.session_state.get("varuna_theme")
     if saved not in ("light", "dark"):
         requested = st.query_params.get("theme")
-        saved = requested if requested in ("light", "dark") else "light"
+        saved = requested if requested in ("light", "dark") else "dark"
         st.session_state["varuna_theme"] = saved
     return saved
 
