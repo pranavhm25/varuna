@@ -350,24 +350,24 @@ The table below breaks down the empirical classification accuracy across each in
 
 This project was developed collaboratively as a 4-person academic machine learning project:
 
-- **Person 1 (Data Cleaning & Harmonization)**:
+- **Person 1: H M Pranav (Data Cleaning & Harmonization)**:
   - Raw table extraction, year correction, summary row filtering (`D`/`T` rows), and duplicate block elimination.
   - Multi-year station name standardization using RapidFuzz phonetic matching and Ballari/Vijayanagar bifurcation resolution.
   - Delivery: `src/clean_data.py`, `data/clean/clean_rainfall.csv`, `reports/cleaning_report.md`.
 
-- **Person 2 (Feature Engineering & Exploratory Data Analysis)**:
+- **Person 2: G S Venkata Sai (Feature Engineering & Exploratory Data Analysis)**:
   - Temporal feature engineering strictly preventing lookahead leakage (`year < Y`).
   - Expanding statistical aggregations, lag indicators, regional offsets, and `gap_years` handling for missing 2023.
   - Exploratory data analysis, departure distribution analysis, and suspect normal identification.
   - Delivery: `src/features.py`, `notebooks/eda.ipynb`, `data/features/README.md`, `reports/suspect_normals.csv`.
 
-- **Person 3 (Machine Learning Modelling & Diagnostics)**:
+- **Person 3: Akshay A (Machine Learning Modelling & Diagnostics)**:
   - Baseline establishment (Majority-Class, Persistence, Predict Zero, Predict Train Mean).
   - Supervised classification with 5-Fold District-Grouped CV (`GroupKFold`) and out-of-time test evaluation on 2025.
   - K-Means climatological clustering ($k=4$), Isolation Forest anomaly detection, and regression debugging (Ridge drop).
   - Delivery: `src/train_models.py`, `src/predict_risk.py`, `models/*`, `reports/modelling_report.md`.
 
-- **Person 4 (Application Engineering, System Integration, Documentation & Defense Preparation)**:
+- **Person 4: Aaditya V (Application Engineering, System Integration, Documentation & Defense Preparation)**:
   - Streamlit web application development (`app/app.py` and the `app/varuna/` module package), cluster labels export (`src/export_cluster_labels.py`), and headless smoke testing (`scripts/smoke_test_app.py`).
   - Production deployment to Streamlit Community Cloud at **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**.
   - System integration, dependencies specification (`requirements.txt`), and comprehensive documentation (`README.md`).
