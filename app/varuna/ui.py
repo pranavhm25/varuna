@@ -134,13 +134,18 @@ def empty_state(message: str) -> str:
     return f'<div class="v-empty">{esc(message)}</div>'
 
 
-def findings(items: Sequence[tuple[str, str]]) -> str:
-    rows = "".join(
-        f'<div class="v-finding"><div class="v-finding__no">{i:02d}</div>'
-        f"<div><h3>{esc(title)}</h3><p>{esc(body)}</p></div></div>"
-        for i, (title, body) in enumerate(items, 1)
-    )
-    return f'<div class="v-findings">{rows}</div>'
+def findings(items: Sequence[dict | tuple[str, str]]) -> str:
+    rows = []
+    for i, item in enumerate(items, 1):
+        if isinstance(item, dict):
+            title, body = item["title"], item["body"]
+        else:
+            title, body = item
+        rows.append(
+            f'<div class="v-finding"><div class="v-finding__no">{i:02d}</div>'
+            f"<div><h3>{esc(title)}</h3><p>{esc(body)}</p></div></div>"
+        )
+    return f'<div class="v-findings">{"".join(rows)}</div>'
 
 
 def flow(stages: Sequence[tuple[str, str, str, str]]) -> str:
