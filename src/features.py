@@ -61,12 +61,22 @@ def create_persistent_station_id(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def assign_target(df: pd.DataFrame) -> pd.DataFrame:
+def assign_target(df: pd.DataFrame, suspect_keys: set | None = None) -> pd.DataFrame:
     """
     Construct the 3-class target variable `risk_zone` based on annual departure_pct:
       - drought_prone : departure_pct <= -20.0%
       - flood_prone   : departure_pct >= +40.0%
       - stable        : -20.0% < departure_pct < +40.0%
+
+    Suspect-normal override
+    -----------------------
+    Stations whose baseline normal never changes AND whose departures are
+    persistently one-sided are flagged as suspect.  When such a station has a
+    very high static normal (> 2 000 mm) *and* its actual rainfall still
+    exceeds the statewide median normal, the apparent "drought_prone" label is
+    an artifact of the uncalibrated benchmark, not evidence of real drought.
+    These rows are reclassified to "stable" so the model is not trained on
+    misleading labels.
     """
     conditions = [
         df["departure_pct"] <= DROUGHT_THRESHOLD,
@@ -74,6 +84,22 @@ def assign_target(df: pd.DataFrame) -> pd.DataFrame:
     ]
     choices = ["drought_prone", "flood_prone"]
     df["risk_zone"] = np.select(conditions, choices, default="stable")
+
+    # Override artificial drought labels for suspect high-normal stations
+    if suspect_keys is not None:
+        median_normal = df["normal_mm"].median()
+        is_suspect = df.apply(
+            lambda r: (r["district"], r["taluk"], r["hobli"]) in suspect_keys,
+            axis=1,
+        )
+        artificial_drought = (
+            is_suspect
+            & (df["risk_zone"] == "drought_prone")
+            & (df["normal_mm"] > 2000)
+            & (df["actual_mm"] > median_normal)
+        )
+        df.loc[artificial_drought, "risk_zone"] = "stable"
+
     return df
 
 
@@ -275,16 +301,14 @@ def main():
     # 2. Assign persistent station tracking id
     data_with_keys = create_persistent_station_id(clean_df)
 
-    # 3. Assign target risk_zone
-    data_with_target = assign_target(data_with_keys)
+    # 3. Identify suspect normal baseline stations (needed before target assignment)
+    suspect_df = identify_suspect_normals(data_with_keys)
+    suspect_keys = set(zip(suspect_df["district"], suspect_df["taluk"], suspect_df["hobli"]))
 
-    # 4. Identify suspect normal baseline stations
-    suspect_df = identify_suspect_normals(data_with_target)
+    # 4. Assign target risk_zone (with suspect-normal override)
+    data_with_target = assign_target(data_with_keys, suspect_keys=suspect_keys)
     suspect_df.to_csv(SUSPECT_NORMALS_PATH, index=False)
     print(f"\n[OK] Identified {len(suspect_df)} suspect normal stations. Saved to {SUSPECT_NORMALS_PATH}")
-
-    # Mark suspect normal in dataframe
-    suspect_keys = set(zip(suspect_df["district"], suspect_df["taluk"], suspect_df["hobli"]))
     data_with_target["is_suspect_normal"] = data_with_target.apply(
         lambda r: 1 if (r["district"], r["taluk"], r["hobli"]) in suspect_keys else 0, axis=1
     )
