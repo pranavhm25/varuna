@@ -472,7 +472,6 @@ ol, ul {
 
 /* ------------------------------------------------------------- terrain -- */
 .terrain-card {
-  background: var(--bg);
   border: 1px solid var(--line);
   border-radius: var(--r-200);
   padding: var(--s-75);
@@ -512,9 +511,6 @@ ol, ul {
   gap: var(--s-50) var(--s-200);
   justify-content: space-between;
   padding: var(--s-75) var(--s-75) var(--s-50);
-  color: var(--ink-3);
-}
-.terrain-hint {
   color: var(--ink-3);
 }
 
