@@ -1,19 +1,17 @@
 [theme]
-# Night-first base of the Varuna design system, matching the landing page. The
-# application applies its own token layer for both themes at runtime; these values
-# keep native widgets and the initial paint consistent with the interface palette.
-base = "dark"
-primaryColor = "#8FB4CE"
-backgroundColor = "#000000"
-secondaryBackgroundColor = "#141414"
-textColor = "#FFFFFF"
+# Light-mode base of the Varuna design system. The application applies its own
+# token layer for both themes at runtime; these values keep native widgets and
+# the initial paint consistent with the interface palette.
+primaryColor = "#2A6584"
+backgroundColor = "#F2EEE4"
+secondaryBackgroundColor = "#E9E3D5"
+textColor = "#12232A"
 font = "sans serif"
 
 [server]
 headless = true
 enableCORS = false
 enableXsrfProtection = true
-enableStaticServing = true
 
 [browser]
 gatherUsageStats = false
