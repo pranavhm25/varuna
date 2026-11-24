@@ -1,21 +1,21 @@
 <div align="center">
 
-<a href="https://varuna-ml.streamlit.app/">
+<a href="https://pranavhm25.github.io/varuna/">
   <img src="docs/images/app_banner.png" alt="Varuna Project Banner" width="100%" />
 </a>
 
 <br/><br/>
 
+[![Landing Page](https://img.shields.io/badge/Live_Site-pranavhm25.github.io%2Fvaruna-0284c7?style=for-the-badge&logo=githubpages&logoColor=white)](https://pranavhm25.github.io/varuna/)
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://varuna-ml.streamlit.app/)
-[![Landing Page](https://img.shields.io/badge/Public_Page-pranavhm25.github.io%2Fvaruna-0284c7?style=for-the-badge&logo=githubpages&logoColor=white)](https://pranavhm25.github.io/varuna/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-3776ab.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3+-f7931e.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![License: ODC-BY](https://img.shields.io/badge/License-ODC--BY-10b981.svg?style=for-the-badge)](https://opendatacommons.org/licenses/by/)
 
 <br/>
 
+### **[👉 Landing page: pranavhm25.github.io/varuna 👈](https://pranavhm25.github.io/varuna/)**
 ### **[👉 Streamlit workspace: varuna-ml.streamlit.app 👈](https://varuna-ml.streamlit.app/)**
-### **[👉 Public page: pranavhm25.github.io/varuna 👈](https://pranavhm25.github.io/varuna/)**
 
 *Official KSNDMC Karnataka Hobli-Level Rainfall Deviation and Drought-Risk Analytics Platform*
 
@@ -29,9 +29,9 @@
 <tr>
 <td width="50%" valign="top">
 
-**[Streamlit workspace](https://varuna-ml.streamlit.app/)** — the cover the app opens on: headline counts and the district-by-season departure field, drawn from the cleaned panel.
+**[Landing page](https://pranavhm25.github.io/varuna/)** — the public entry point, with the district-by-season departure field and the headline counts.
 
-<a href="https://varuna-ml.streamlit.app/"><img src="docs/images/screenshot_app_cover.png" alt="Streamlit workspace cover: headline, departure ridge field and station counts" width="100%" /></a>
+<a href="https://pranavhm25.github.io/varuna/"><img src="docs/images/screenshot_landing.png" alt="Varuna landing page: headline, departure terrain and station counts" width="100%" /></a>
 
 </td>
 <td width="50%" valign="top">
@@ -43,10 +43,6 @@
 </td>
 </tr>
 </table>
-
-The standalone public page in `landing/`, which introduces the project and links into the workspace:
-
-<a href="https://pranavhm25.github.io/varuna/"><img src="docs/images/screenshot_landing.png" alt="Varuna public page: headline, departure terrain and station counts" width="100%" /></a>
 
 ---
 
@@ -67,11 +63,10 @@ While synoptic state and district-level forecasts mask extreme micro-climatic ra
 
 ## 🧭 Application Modules
 
-The Streamlit workspace at **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)** is a single analytical shell rather than a row of tabs: a persistent station selector (district → taluk → hobli) sits in the sidebar, an overview cover and five analytical modules occupy the reading pane, and a Daylight / Night watch switch changes the theme without touching any analytical state.
+The Streamlit workspace at **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)** is a single analytical shell rather than a row of tabs: a persistent station selector (district → taluk → hobli) sits in the sidebar, five analytical modules occupy the reading pane, and a Daylight / Night watch switch changes the theme without touching any analytical state.
 
 | Module | Scope | What it contains |
 | :--- | :--- | :--- |
-| **00 · Overview** | Project | The cover the workspace opens on: the headline counts, the district-by-season departure field drawn from the cleaned panel, and entry into the modules below. |
 | **01 · Hobli Intelligence** | One station | Observed rainfall history against the station normal, the KSNDMC departure meter, the annual register (2023 marked as not published), the 2025 hold-out classifier verdict with class probabilities, taluk and district context, and the 2026–2027 projection with a rainfall-shift simulator. |
 | **02 · Risk Zones** | Climatology | The k=4 K-Means regimes as a labelled atlas, mean-departure and volatility charts, and a filterable chronic-deficit registry with suspect-normal flags. |
 | **03 · District Intelligence** | Regional | A 31-district × 5-season departure matrix (no fabricated coordinates), the station-year anomaly distribution, regime composition by season, and district ranking with a focused trajectory. |
@@ -239,15 +234,16 @@ ml-project/
 
 ## 🚀 How to Run the Project (Step-by-Step)
 
-### 1. Live Application
-Open the deployed application without local setup:  
-👉 **[https://varuna-ml.streamlit.app/](https://varuna-ml.streamlit.app/)**
+### 1. Live Site and Application
+Open the deployed site without local setup:  
+👉 **[https://pranavhm25.github.io/varuna/](https://pranavhm25.github.io/varuna/)**
 
-This is the product: the interface that reads `data/`, `models/` and `reports/` and calls `src/predict_risk.py`. The
-separate public page in `landing/` introduces the project and links back into it:
-**[https://pranavhm25.github.io/varuna/](https://pranavhm25.github.io/varuna/)**. That page is published to GitHub
-Pages by `.github/workflows/pages.yml` on every push that touches `landing/`; Pages is enabled for this repository
-under **Settings → Pages → Build and deployment → Source: GitHub Actions**. Preview it locally with
+That page is the project's public front door. Its calls to action lead into the Streamlit dashboard, which reads the
+observations directly: **[varuna-ml.streamlit.app](https://varuna-ml.streamlit.app/)**
+
+The landing page lives in `landing/` and is published to GitHub Pages by `.github/workflows/pages.yml` on every push
+that touches that folder. Pages is enabled for this repository under **Settings → Pages → Build and deployment →
+Source: GitHub Actions**, so the workflow publishes on its own. Preview the page locally with
 `python -m http.server 8600 --directory landing`.
 
 ### 2. Local Setup & Execution
